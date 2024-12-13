@@ -1,0 +1,150 @@
+@use '~/shared/styles/colors' as c;
+@use '~/shared/styles/mixins/utilities' as u;
+@use '~/shared/styles/mixins/typography' as t;
+@import url('./reset.scss');
+
+body {
+	font-family: 'Open Sans', sans-serif;
+	color: c.$main-text;
+}
+
+.app {
+	width: 100%;
+	height: 95vh;
+	display: flex;
+}
+
+.w-full {
+	width: 100%;
+}
+
+.h-full {
+	height: 100%;
+}
+
+.gap-1 {
+	gap: 0.25rem;
+}
+
+.gap-2 {
+	gap: 0.5rem;
+}
+
+.gap-4 {
+	gap: 1rem;
+}
+
+.gap-x-1 {
+	row-gap: 0.25rem;
+}
+
+.gap-x-2 {
+	row-gap: 0.5rem;
+}
+
+.gap-x-4 {
+	row-gap: 1rem;
+}
+
+.mb-4 {
+	margin-bottom: 1rem;
+}
+
+.p-2 {
+	padding: 0.25rem;
+}
+
+.py-2 {
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
+}
+
+.px-2 {
+	padding-left: 0.25rem;
+	padding-right: 0.25rem;
+}
+
+.pl-2 {
+	padding-left: 0.25rem;
+}
+
+.pr-2 {
+	padding-right: 0.25rem;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.flex {
+	@include u.flexbox();
+}
+
+.flex-center {
+	@include u.center();
+}
+
+.flex-wrap {
+	flex-wrap: wrap;
+}
+
+.flex-no-wrap {
+	flex-wrap: nowrap;
+}
+
+.flex-row {
+	flex-direction: row;
+}
+
+.flex-col {
+	flex-direction: column;
+}
+
+.cursor-pointer {
+	cursor: pointer;
+}
+
+
+.w-1 {
+	width: 1rem;
+}
+
+.h-1 {
+	height: 1rem;
+}
+
+.w-6 {
+	width: 1.5rem;
+}
+
+.h-6 {
+	height: 1.5rem;
+}
+
+.mx-auto {
+	margin: 0 auto;
+}
+
+.h1 {
+	@include t.heading(1);
+}
+
+.h2 {
+	@include t.heading(2);
+}
+
+.h3 {
+	@include t.heading(3);
+}
+
+.p1 {
+	@include t.paragraph(1.125rem);
+}
+
+.p2 {
+	@include t.paragraph(1rem);
+}
+
+.p3 {
+	@include t.paragraph(0.875rem, 1.25rem);
+}

@@ -1,0 +1,44 @@
+@use '~/shared/styles/colors' as c;
+@use '~/shared/styles/mixins/utilities' as u;
+
+.dialog-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 99;
+	transition: opacity 0.3s ease;
+}
+
+.dialog-content {
+	min-width: 50rem;
+	max-height: 94vh;
+	margin-top: 2rem;
+	z-index: 100;
+	background-color: c.$white;
+	border-radius: 4px;
+	overflow-y: auto;
+	padding-bottom: 1rem;
+
+	@include u.abs-center();
+}
+
+.dialog-title {
+	display: none;
+}
+
+@media screen and (max-width: 840px) {
+	.dialog-content {
+		min-width: 96%;
+	}
+}
+
+@media screen and (max-width: 767px) {
+	.dialog-content {
+		min-width: 100%;
+		min-height: 100%;
+		margin-top: 0;
+	}
+}

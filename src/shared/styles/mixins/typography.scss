@@ -1,0 +1,38 @@
+/* Base typography mixin */
+@mixin typography(
+  $font-size,
+  $font-weight: 400,
+  $line-height: 1.5,
+  $letter-spacing: normal
+) {
+  font-size: $font-size;
+  font-weight: $font-weight;
+  line-height: $line-height;
+  letter-spacing: $letter-spacing;
+}
+
+/* Heading mixin */
+@mixin heading($level: 1, $weight: 700) {
+  @if $level == 1 {
+    @include typography(2.5rem, $weight, 1.2, -0.02em);
+  } @else if $level == 2 {
+    @include typography(2rem, $weight, 1.3, -0.015em);
+  } @else if $level == 3 {
+    @include typography(1.75rem, $weight, 1.4, -0.01em);
+  }
+}
+
+
+/* Paragraph mixin */
+@mixin paragraph($size: 1rem, $line-height: 1.6) {
+  @include typography($size, 400, $line-height, normal);
+}
+
+/*
+  usage examples:
+  @include heading(1);
+  @include heading(3, 600); Example with custom font weight
+
+  @include paragraph(0.875rem, 1.4);
+  @include paragraph(1.125rem, 1.8);
+*/

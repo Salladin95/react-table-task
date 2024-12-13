@@ -1,0 +1,57 @@
+@use "sass:color";
+@use '~/shared/styles/colors' as c;
+@use '~/shared/styles/mixins/utilities' as u;
+@use '~/shared/styles/mixins/typography' as t;
+
+.btn {
+  border: 1px solid transparent;
+  text-transform: none;
+  box-sizing: border-box;
+  border-radius: 4px;
+  transition:
+		border-color 0.5s ease,
+		box-shadow 0.5s ease;
+  background-color: transparent;
+
+  
+  @include t.paragraph(0.875rem, 1.25rem);
+  @include u.center();
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.btn {
+  &_variant--primary {
+    background-color: c.$blue-600;
+    color: c.$white;
+
+    &:hover {
+      background-color: color.adjust(c.$blue-600, $lightness: 15%, $space: hsl);
+    }
+  }
+
+  &_variant--secondary {
+    border: 1px solid c.$gray;
+    background-color: c.$white;
+    color: c.$black;
+
+    &:hover, &:focus {
+      border-color: color.adjust(c.$gray, $lightness: -15%, $space: hsl);
+      background-color: color.adjust(c.$gray, $lightness: 12%, $space: hsl);
+    }
+  }
+
+  &_size--default {
+    max-height: 2rem;
+    @include u.py(0.375rem);
+    @include u.px(0.75rem);
+  }
+
+  &_size--sm {
+    max-height: 2rem;
+    width: 2rem;
+    @include u.p(6px, 6px);
+  }
+}

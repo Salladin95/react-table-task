@@ -1,0 +1,41 @@
+@use 'sass:color';
+@use '~/shared/styles/colors' as c;
+@use '~/shared/styles/mixins/utilities' as u;
+
+.input-wrapper {
+	width: 100%;
+	border: 1px solid c.$gray;
+	border-radius: 4px;
+	box-sizing: border-box;
+	transition:
+		border-color 0.5s ease,
+		box-shadow 0.5s ease;
+	padding: 0.25rem;
+
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.25rem;
+
+	&:focus-within,
+	&:hover {
+		border-color: color.adjust(c.$gray, $lightness: -15%, $space: hsl);
+		box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+	}
+
+	&.input-wrapper_error {
+		border-color: c.$red;
+
+		.input-wrapper__input {
+			color: c.$red;
+		}
+	}
+
+	.input-wrapper__input {
+		min-width: 3.5rem;
+		justify-self: stretch;
+		align-self: stretch;
+		flex: 1;
+		border: none;
+		background: transparent;
+	}
+}
