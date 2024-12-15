@@ -1,5 +1,6 @@
 * {
   margin: 0;
+  padding: 0;
 }
 
 body {
@@ -15,10 +16,6 @@ img, picture, video, canvas, svg, label {
 input, button, textarea, select {
   font: inherit;
   outline: unset;
-
-  &:focus, &:hover {
-    outline: unset;
-  }
 }
 
 p, h1, h2, h3, h4, h5, h6 {
@@ -31,4 +28,22 @@ p {
 
 h1, h2, h3, h4, h5, h6 {
   text-wrap: balance;
+}
+
+/* Reset default table styles */
+table {
+    border-collapse: collapse; 
+    border-spacing: 0;        
+    width: 100%;             
+    border: none;         
+}
+
+th, td {
+    border: none;       
+    text-align: left;  
+    vertical-align: top; 
+}
+
+thead, tbody, tfoot, tr {
+    border: none;
 }

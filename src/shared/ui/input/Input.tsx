@@ -1,71 +1,71 @@
-import React from 'react'
-import { cn, focusFirstInput } from '~/shared/utils'
-import { cva, VariantProps } from 'class-variance-authority'
+import React from 'react';
+import styled from 'styled-components';
 
-import './input.scss'
-
-const inputVariants = cva('input-wrapper__input input p3', {
-	variants: {
-		variant: {
-			primary: ['input-wrapper__input_primary'],
-			secondary: ['input-wrapper__input_secondary'],
-			none: [],
-		},
-		size: {
-			default: ['input_size-default'],
-			none: [],
-		},
-	},
-	defaultVariants: {
-		variant: 'primary',
-		size: 'default',
-	},
-})
-
-export type InputVariant = VariantProps<typeof inputVariants>
 export type InputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'prefix' | 'size'> & {
-	variant?: InputVariant['variant']
-	/**
-	 * Size: [default, none]
-	 * */
-	size?: InputVariant['size']
-	/**
-	 * Applies error styles
-	 * */
-	error?: boolean
-	/**
-	 * Adds prefix content before the input
-	 */
-	prefix?: React.ReactNode
-	/**
-	 * Adds suffix content after the input
-	 */
-	suffix?: React.ReactNode
-}
+  /**
+   * Applies error styles
+   */
+  error?: boolean;
+  /**
+   * Adds prefix content before the input
+   */
+  prefix?: React.ReactNode;
+  /**
+   * Adds suffix content after the input
+   */
+  suffix?: React.ReactNode;
+};
+
+const InputWrapper = styled.div<{ error?: boolean }>`
+  width: 100%;
+  border: 1px solid ${props => (props.error ? '#880000' : '#000')};
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: border-color 0.5s ease, box-shadow 0.5s ease;
+  padding: 0.25rem;
+  margin-bottom: 1rem;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+
+  &:focus-within,
+  &:hover {
+    border-color: ${props => (props.error ? '#880000' : 'hsl(calc(var(--lightness) - 15%), 78%, 78%)')};
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  }
+`;
+
+const StyledInput = styled.input<{ error?: boolean }>`
+  min-width: 3.5rem;
+  justify-self: stretch;
+  align-self: stretch;
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: ${props => (props.error ? '#880000' : 'inherit')};
+
+  &:focus {
+    outline: none;
+  }
+`;
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
-	const { id, variant, size, className, error, prefix, suffix, ...rest } = props
-	return (
-		<div
-			className={cn('input-wrapper', className, {
-				'input-wrapper_error': error,
-			})}
-			onClick={focusFirstInput}
-		>
-			{prefix ?? null}
-			<input
-				aria-invalid={error}
-				autoComplete="off"
-				className={inputVariants({
-					variant,
-					size,
-				})}
-				data-error={error}
-				id={id}
-				ref={ref}
-				{...rest}
-			/>
-			{suffix ?? null}
-		</div>
-	)
-})
+  const { id, error, prefix, suffix, ...rest } = props;
+
+  return (
+    <InputWrapper error={error}>
+      {prefix ?? null}
+      <StyledInput
+        aria-invalid={error}
+        autoComplete="off"
+        error={error}
+        id={id}
+        ref={ref}
+        {...rest}
+      />
+      {suffix ?? null}
+    </InputWrapper>
+  );
+});

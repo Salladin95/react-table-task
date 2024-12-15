@@ -1,2 +1,1 @@
-export * from './UiKit'
-export * from './Table'
+export * from './table'

@@ -1,0 +1,27 @@
+@import url('./reset.css');
+
+body {
+	font-family: 'Open Sans', sans-serif;
+	color: #000;
+}
+
+.app {
+  padding: 1rem;
+}
+
+.input-wrapper {
+  margin-bottom: 2rem;
+}
+
+.w-full {
+	width: 100%;
+}
+
+.h-full {
+	height: 100%;
+}
+
+.cursor-pointer {
+	cursor: pointer;
+}
+

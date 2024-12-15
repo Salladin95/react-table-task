@@ -1,58 +1,103 @@
 import React from 'react'
-import { Table, TableRowItem, SortConfig } from './widgets/Table'
+import { DetailsInfo, Entity } from './entities'
+import { Input, StyledSearchIcon } from './shared/ui'
+import { SortConfig, Table } from './widgets'
 
-import './index.scss'
+import './index.css'
+
+async function fetchTableData() {
+	return fetch(TABLE_DATA_URL).then((response) => response.json())
+}
 
 function App() {
-  const [tableData, setTableData] = React.useState<TableRowItem[]>([]) // State to hold fetched data
-  const [loading, setLoading] = React.useState(true) // State to indicate loading
-  const [sortConfig, setSortConfig] = React.useState<SortConfig | null>(null) // State to manage sorting configuration
+	const [originalTableData, setOriginalTableData] = React.useState<Entity[]>([])
+	const [tableCurrTableData, setCurrTableData] = React.useState<Entity[]>([])
+	const [selectedRow, setSelectedRow] = React.useState<Entity | null>(null)
+	const [loading, setLoading] = React.useState(true)
+	const [sortConfig, setSortConfig] = React.useState<SortConfig | null>(null)
 
-  function handleSort(sort: SortConfig) {
-    const { key, direction } = sort
-    const sortedData = [...tableData].sort((a, b) => {
-      if (a[key] < b[key]) {
-        return direction === 'asc' ? -1 : 1
-      }
-      if (a[key] > b[key]) {
-        return direction === 'asc' ? 1 : -1
-      }
-      return 0
-    })
-    setTableData(sortedData)
-  }
+	const [searchValue, setSearchValue] = React.useState('')
 
-  React.useEffect(() => {
-    // Fetch data from the API
-    fetch(TABLE_DATA_URL)
-      .then((response) => response.json())
-      .then((data) => {
-        setTableData(data) // Update state with fetched data
-        setLoading(false) // Turn off loading indicator
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error)
-        setLoading(false) // Ensure loading stops even if an error occurs
-      })
-  }, []) // Run effect only once on component mount
+	function handleSort(sort: SortConfig) {
+		const { key, direction } = sort
 
-  if (loading) {
-    return <div>Loading...</div> // Show loading indicator while fetching
-  }
+		setCurrTableData((data) => {
+			return data.sort((a, b) => {
+				if (a[key] < b[key]) {
+					return direction === 'asc' ? -1 : 1
+				}
+				if (a[key] > b[key]) {
+					return direction === 'asc' ? 1 : -1
+				}
+				return 0
+			})
+		})
+	}
 
-  function handleTableClick(key: keyof TableRowItem) {
-    let direction: 'asc' | 'desc' = 'asc'
-    if (sortConfig?.key === key && sortConfig?.direction === 'asc') {
-      direction = 'desc'
-    }
-    setSortConfig({ key, direction })
-    handleSort({ key, direction })
-  }
+	React.useEffect(() => {
+		// Fetch data from the API
+		fetchTableData()
+			.then((data) => {
+				setOriginalTableData(data)
+				setCurrTableData(data)
+				setLoading(false)
+			})
+			.catch((error) => {
+				console.error('Error fetching data:', error)
+				setLoading(false) // Ensure loading stops even if an error occurs
+			})
+	}, []) // Run effect only once on component mount
 
-  return <Table sortConfig={sortConfig} onTableClick={handleTableClick} data={tableData} />
+	if (loading) {
+		return <div>Loading...</div> // Show loading indicator while fetching
+	}
+
+	function handleFilter() {
+		const lowerCaseFilter = searchValue.toLowerCase()
+		const data = [...originalTableData]
+		if (!lowerCaseFilter) {
+			setCurrTableData(data)
+		}
+		setCurrTableData(
+			data.filter(
+				(v) =>
+					v.firstName.toLowerCase().includes(lowerCaseFilter) ||
+					v.lastName.toLowerCase().includes(lowerCaseFilter) ||
+					v.email.toLowerCase().includes(lowerCaseFilter) ||
+					v.phone.toLowerCase().includes(lowerCaseFilter),
+			),
+		)
+	}
+
+	function handleTableClick(key: keyof Entity) {
+		let direction: 'asc' | 'desc' = 'asc'
+		if (sortConfig?.key === key && sortConfig?.direction === 'asc') {
+			direction = 'desc'
+		}
+		setSortConfig({ key, direction })
+		handleSort({ key, direction })
+	}
+
+	return (
+		<main className="app">
+			<Input
+				onChange={(e) => setSearchValue(e.currentTarget?.value)}
+				placeholder="Найти"
+				suffix={<StyledSearchIcon onClick={handleFilter} />}
+			/>
+			<Table
+				activeItem={selectedRow}
+				onRowCLick={(rowItem) => setSelectedRow(rowItem)}
+				sortConfig={sortConfig}
+				onColumnClick={handleTableClick}
+				data={tableCurrTableData}
+			/>
+			{selectedRow && <DetailsInfo {...selectedRow} />}
+		</main>
+	)
 }
 
 const TABLE_DATA_URL =
-  'http://www.filltext.com/?rows=32&id=%7Bnumber%7C1000%7D&firstName=%7BfirstName%7D&lastName=%7BlastName%7D&email=%7Bemail%7D&phone=%7Bphone%7C(xxx)xxx-xx-xx%7D&address=%7BaddressObject%7D&description=%7Blorem%7C32%7D'
+	'http://www.filltext.com/?rows=32&id=%7Bnumber%7C1000%7D&firstName=%7BfirstName%7D&lastName=%7BlastName%7D&email=%7Bemail%7D&phone=%7Bphone%7C(xxx)xxx-xx-xx%7D&address=%7BaddressObject%7D&description=%7Blorem%7C32%7D'
 
 export default App
